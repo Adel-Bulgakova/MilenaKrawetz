@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block html-tag-style %} class="index-page-html" {% endblock %}
+{% block title %} {{ config.SITE_TITLE }} {% endblock %}
+{% block page_description %} {{ config.SITE_DESCRIPTION }} {% endblock %}
+{% block body-tag-style %} class="index-page-body" {% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+    <div class="page-wrapper">
+        <div class="page-content-wrapper">
+            <div class="page-content-block">
+
+                <div class="page-content">
+                    <div class="aligned-block">
+                        <img src="{% static 'images/logo.png' %}" alt="Milena Krawetz" class="site-logo">
+                         <div class="menu-toggle-icon">Menu</div>
+                    </div>
+                 </div>
+
+            </div>
+        </div>
+
+        <div class="index-page-footer">
+            <div class="profile-links">
+                <a class="profile-link" href="https://www.instagram.com/milena_krawetz/" title="Instagram"><img class="profile-link-icon" src="{% static 'images/icons/icon-instagram.svg' %}" alt="Instagram"></a>
+                <a class="profile-link" href="https://www.facebook.com/profile.php?id=100001435337245" title="Facebook"><img class="profile-link-icon" src="{% static 'images/icons/icon-facebook.svg' %}" alt="Facebook"></a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

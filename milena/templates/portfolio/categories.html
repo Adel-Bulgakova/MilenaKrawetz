@@ -1,0 +1,13 @@
+{% if categories %}
+
+    {% for category in categories %}
+
+        <div class="col-sm-6 col-md-4">
+
+            <a href="{{ category.get_absolute_url }}" class="menu-item" style="background: #D6D6D6 url({{ category.thumbnail.url}}) center center no-repeat;  background-size: cover;"><div class="link-inner">{{ category.title }}</div></a>
+
+        </div>
+
+    {% endfor %}
+
+{% endif %}

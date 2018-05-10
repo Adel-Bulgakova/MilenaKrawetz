@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+	{% block title %} Milena Krawetz | About me {% endblock %}
+	{% block page_description %} Milena Krawetz | About me {% endblock %}
+    {% block page_keywords %} {% endblock %}
+
+	{% block content %}
+        <div class="container text-center about">
+
+            <div class="row">
+                <h1 class="category-title text-center">About me</h1>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 col-md-offset-3 col-md-6">
+                    <img src="{% static 'images/kHr6IliHkBaEz.jpg' %}" alt="Milena Krawetz" class="portrait">
+                </div>
+            </div>
+
+            <div class="row">
+                "Milena’s spirit and body were united upon her birth on the border between Europe and Asia. An insatiable curiosity, reckless abandon, and a healthy dose of serendipity have since carried her and her talents all over both continents, where she feels equally at home. A visual artist experienced in many mediums, particularly oils, acrylics, spray paint and watercolors, Milena uses her gifts in every and any way she can, always emphasizing the “free” in freelance. Her specialty lies in large canvas works and wall paintings, but her abilities have been realized just as successfully in everything from illustrating poetry and children’s books to serving as the art director of a small company; from designing her own clothing, jewelry and accessories, to cultivating the innate artistic gifts in others as a teacher. For Milena, art is not merely an extension of herself – life is the canvas upon which she paints herself anew every day. Building on her established career as a model, she has also tried her hand at acting. Milena has long been a photographer with a keen eye for the overlooked beauty of everyday life, and has answered her latest calling as a camera operator in documentary filmmaking."
+                <p>Written by Sean Kelly</p>
+            </div>
+        </div>
+    {% endblock %}

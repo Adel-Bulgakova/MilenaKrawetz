@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+	{% block title %} Milena Krawetz | {{ category.title }} {% endblock %}
+	{% block page_description %}{{ category.subtitle }}{% endblock %}
+    {% block css %}
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.2/css/all.css">
+    {% endblock %}
+    {% block meta-data %}
+        <meta property="og:url" content="{{ request.build_absolute_uri }}">
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="{{ category_instance.title }}">
+        <meta property="og:description" content="{{ category_instance.subtitle }}">
+        <meta property="og:image" content="{{ instance.category_item.url  }}">
+    {% endblock %}
+	{% block content %}
+
+        <div class="container text-center">
+            <div class="breadcrumbs text-left">
+                <a class="menu-toggle-icon">Portfolio</a>
+                {% if category_instance.get_ancestors|length > 0 %}
+                    {% for ancestor in category_instance.get_ancestors %}
+                        > <a href="{{ ancestor.get_absolute_url }}">{{ ancestor.title }}</a>
+                    {% endfor %}
+                {% endif %}
+                > <a href="{{ category_instance.get_absolute_url }}">{{ instance.category.title }}</a>
+            </div>
+
+            <div class="row">
+                <h1 class="category-title text-center">{{ instance.category_item_name }}</h1>
+            </div>
+
+            {% if  instance.is_video %}
+                <img src="{{ instance.category_item.url }}" alt="{{ instance.category_item_name }}" width="100%"/>
+            {% else %}
+                <img src="{{ instance.category_item.url }}" alt="{{ instance.category_item_name }}" width="100%"/>
+            {% endif %}
+
+
+        </div>
+
+    {% endblock %}
+{% block scripts %}
+{% endblock %}

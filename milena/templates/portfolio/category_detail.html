@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+	{% block title %} Milena Krawetz | {{ category.title }} {% endblock %}
+	{% block page_description %}{{ category.subtitle }}{% endblock %}
+    {% block page_keywords %}{{ category.keywords }}{% endblock %}
+    {% block css %}
+        <link rel="stylesheet" href="{% static 'libs/lightgallery/css/lightgallery.css' %}">
+        <link rel="stylesheet" href="{% static 'libs/lightgallery/css/lg-transitions.css' %}">
+        <link rel="stylesheet" href="{% static 'libs/justifiedgallery/justifiedGallery.min.css' %}">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.2/css/all.css">
+    {% endblock %}
+
+	{% block content %}
+
+        <div class="container text-center">
+            <div class="breadcrumbs text-left">
+                <a class="menu-toggle-icon">Portfolio</a>
+                {% if category.get_ancestors|length > 0 %}
+                    {% for ancestor in category.get_ancestors %}
+                        > <a href="{{ ancestor.get_absolute_url }}">{{ ancestor.title }}</a>
+                    {% endfor %}
+            {% endif %}
+                > {{ category.title }}
+            </div>
+
+            <div class="row">
+                <h1 class="category-title text-center">{{ category.title }}</h1>
+            </div>
+
+            {% if category.subtitle %}
+                <div class="row">
+                    <p>{{ category.subtitle|linebreaksbr }}</p>
+                </div>
+            {% endif %}
+
+            {% if subcategories_data %}
+
+                <div class="row standard-indentation-bottom">
+                    {% for subcategory in subcategories_data %}
+
+                        <div class="col-md-4">
+
+                            <a href="{{ subcategory.get_absolute_url }}" class="menu-item" style="background: #D6D6D6 url({{ subcategory.thumbnail.url}}) center center no-repeat;  background-size: cover;"><div class="link-inner">{{ subcategory.title }}</div></a>
+
+                        </div>
+
+                    {% endfor %}
+                </div>
+
+            {% endif %}
+
+            {% if category_data %}
+                <div id="portfolio-gallery">
+
+                    {% for category_item in category_data %}
+                        {% with slide_number=forloop.counter0|stringformat:"s" item_pk=category_item.pk|stringformat:"s" %}
+                        {% with data_url=request.build_absolute_uri|add:"#lg=1&slide="|add:slide_number  data_fb_url=item_detail_path|add:item_pk|add:"/" %}
+
+    {#                    {% if category_item.extension in ".mp4,.mov" %}#}
+                            {% if  category_item.is_video %}
+                                <a href="{{ category_item.video_link }}" class="category-item" data-poster="{{ category_item.category_item.url }}" data-facebook-share-url="{{ data_fb_url }}" data-pinterest-text="Milena Krawetz | {{ category.title }}" data-tweet-text="Milena Krawetz | {{ category.title }}">
+                                    <img src="{{ category_item.category_item.url }}" alt="{{ category_item.category_item_name }}"/>
+                                    <i class="icon-play"></i>
+                                </a>
+                            {% else %}
+                                <a href="{{ category_item.category_item.url }}" class="category-item" data-facebook-share-url="{{ data_fb_url }}" data-pinterest-text="Milena Krawetz | {{ category.title }}" data-tweet-text="Milena Krawetz. {{ category.title }}">
+                                    <img src="{{ category_item.category_item.url }}" alt="{{ category_item.category_item_name }}"/>
+
+                                    <div class="category-item-social-icons" data-url="{{ data_url }}" data-facebook-share-url="{{ data_fb_url }}" data-title="Milena Krawetz | {{ category.title }}" data-img-url="{{ category_item.category_item.url }}">
+                                        <i class="fab fa-facebook-f" data-social-icon="facebook"></i>
+                                        <i class="fab fa-twitter" data-social-icon="twitter"></i>
+                                        <i class="fab fa-pinterest" data-social-icon="pinterest"></i>
+                                    </div>
+
+                                    <div class="category-item-social-share">
+                                        <span class="glyphicon glyphicon-share-alt icon-share"></span>
+                                    </div>
+                                </a>
+                            {% endif %}
+                        {% endwith %}
+                        {% endwith %}
+
+                    {% endfor %}
+
+                </div>
+
+                {% else %}
+                    <div class="row">No items</div>
+                {% endif %}
+
+        </div>
+    {% endblock %}
+
+    {% block scripts %}
+{#        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>#}
+        <script src="{% static 'libs/lightgallery/js/lightgallery.js' %}"></script>
+        <script src="https://f.vimeocdn.com/js/froogaloop2.min.js"></script>
+
+{#        <script src="{% static 'libs/colorbox/jquery.colorbox-min.js' %}"></script>#}
+        <script src="{% static 'libs/justifiedgallery/jquery.justifiedGallery.min.js' %}"></script>
+        <script>
+            function popup(url) {
+                window.open(url,'','toolbar=0,status=0,width=626,height=436');
+            }
+            $(document).ready(function() {
+                var $gallery = $("#portfolio-gallery");
+
+                $gallery.justifiedGallery({
+                    rowHeight: 250,
+                    lastRow: 'justify'
+                });
+
+                $gallery.lightGallery({
+                    actualSize: false,
+                    autoplay: false,
+                    download: false,
+                    hash: true,
+                    googlePlus: false,
+                    thumbnail: false,
+                    selector: '.category-item'
+                });
+
+                $('.category-item-social-share').click(function(e) {
+                    $('.category-item-social-icons').css('opacity', '0').attr('active', 'true');
+                    if ($(e.target).hasClass('icon-share')) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        $(this).parent().find('.category-item-social-icons').css('opacity', '1');
+                    } else {
+                        e.preventDefault();
+                    }
+                });
+
+                $('.category-item-social-icons i').click(function (e) {
+                    if ($(this).parent().attr('active') == 'true') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        var icon = $(this).attr('data-social-icon'),
+                        page_url = $(this).parent().attr('data-url'),
+                        page_fb_url = $(this).parent().attr('data-facebook-share-url'),
+                        title = $(this).parent().attr('data-title'),
+                        img_url = $(this).parent().attr('data-img-url');
+
+                        switch(icon) {
+                            case 'facebook':
+                                url  = 'https://www.facebook.com/sharer/sharer.php?u=';
+                                url += encodeURIComponent(page_fb_url);
+                                url += '&t='+ encodeURIComponent(title);
+                                popup(url);
+                                break;
+                            case 'twitter':
+                                url = 'http://twitter.com/share?';
+                                url += 'text='      + encodeURIComponent(title);
+                                url += '&url='      + encodeURIComponent(page_url);
+                                url += '&counturl=' + encodeURIComponent(page_url);
+                                popup(url);
+                                break;
+                            case 'pinterest':
+                                url  = 'http://www.pinterest.com/pin/create/button/?';
+                                url += '&url='     + encodeURIComponent(page_url);
+                                url += '&media='   + encodeURIComponent(img_url);
+                                url += '&description=' + encodeURIComponent(title);
+                                popup(url);
+                                break;
+                        }
+                    }
+
+                });
+                $('.category-item').mouseleave(function () {
+                    $('.category-item-social-icons').css('opacity', '0').attr('active', 'false');
+                })
+            });
+        </script>
+    {% endblock %}
